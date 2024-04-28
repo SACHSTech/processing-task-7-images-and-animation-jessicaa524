@@ -1,36 +1,51 @@
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Sketch extends PApplet {
-	
-	
-  /**
-   * Called once at the beginning of execution, put your size all in this method
-   */
-  public void settings() {
-	// put your size call here
-    size(400, 400);
-  }
+    
+    PImage imgKuromi;
+    PImage imgBackground;
 
-  /** 
-   * Called once at the beginning of execution.  Add initial set up
-   * values here i.e background, stroke, fill etc.
-   */
-  public void setup() {
-    background(210, 255, 173);
-  }
+    float fltKuromiX;
+    float fltKuromiY;
+    float fltSpeedX = 8; 
+    float fltSpeedY = -15; 
+    float fltGravity = 0.3f; 
 
-  /**
-   * Called repeatedly, anything drawn to the screen goes here
-   */
-  public void draw() {
-	  
-	// sample code, delete this stuff
-    stroke(128);
-    line(150, 25, 270, 350);  
+    public void settings() {
+        size(800, 800);
+    }
 
-    stroke(255);
-    line(50, 125, 70, 50);  
-  }
-  
-  // define other methods down here.
+    public void setup() {
+        imgBackground = loadImage("images/heartbackground.jpeg");
+        imgBackground.resize(width, height);
+
+        imgKuromi = loadImage("images/Kuromi.png");
+        imgKuromi.resize(width / 5, height / 5);
+
+        // sets start at center
+        fltKuromiX = width / 2; 
+        fltKuromiY = height / 2; 
+    }
+
+    public void draw() {
+        background(imgBackground);
+
+        image(imgKuromi, fltKuromiX, fltKuromiY);
+
+        // Kuromi's position
+        fltKuromiX += fltSpeedX;
+        fltKuromiY += fltSpeedY;
+        fltSpeedY += fltGravity;
+
+        // Setting boundaries and direction
+        if (fltKuromiX <= 0 || fltKuromiX >= width - imgKuromi.width) {
+            fltSpeedX *= -1; 
+            fltKuromiX = constrain(fltKuromiX, 0, width - imgKuromi.width); // keepinging within boudnaries
+        }
+        if (fltKuromiY >= height - imgKuromi.height) {
+            fltSpeedY *= -0.9; 
+            fltKuromiY = height - imgKuromi.height; // keeping within boundaries 
+        }
+    }
 }
